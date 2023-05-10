@@ -1,0 +1,13 @@
+ name: run tests from packaged source
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: test
+        run: |
+          python setup.py sdist
+          version="$(cat nose2/__init__.py | grep '^__version__' |  cut -d '"' -f2)"
+          cd dist
+          tar -xzf "nose2-${version}.tar.gz"
